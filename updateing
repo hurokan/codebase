@@ -23,3 +23,12 @@ UPDATE discountings d
 UPDATE top_funding_limits set current_exposure=0,pipeline_request=0,seller_current_exposure=0,
 seller_pipeline_request=0,available_limit=approve_limit;
 
+
+***************************************
+
+
+UPDATE od_transactions 
+            	JOIN band_configurations 
+                	ON od_transactions.band_configuration_id = band_configurations.id
+            	            	SET od_transactions.od_limit = band_configurations.drawingpower,od_transactions.available_limit=band_configurations.drawingpower;
+
