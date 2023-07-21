@@ -1,0 +1,25 @@
+
+
+update od_transactions set balance=0,
+interest_balance=0,penal_interest=0; 
+
+
+
+UPDATE discountings d
+ SET d.status= 8;
+ 
+ UPDATE payment_instructions p
+ SET p.status= 4;
+ 
+ update od_accounts 
+ set od_limit=available_limit,
+ limit_utilies=0,
+ pipeline_request=0;
+ 
+ UPDATE funding_limits set buyer_current_exposure=0,seller_current_exposure=0,buyer_pipeline_request=0,
+ seller_pipeline_request=0,available_limit=approve_limit;
+
+
+UPDATE top_funding_limits set current_exposure=0,pipeline_request=0,seller_current_exposure=0,
+seller_pipeline_request=0,available_limit=approve_limit;
+
