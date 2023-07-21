@@ -32,3 +32,6 @@ UPDATE od_transactions
                 	ON od_transactions.band_configuration_id = band_configurations.id
             	            	SET od_transactions.od_limit = band_configurations.drawingpower,od_transactions.available_limit=band_configurations.drawingpower;
 
+***********************************************************
+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
+
