@@ -1,0 +1,72 @@
+in DBCompatibleFunctions.php
+----------------------------------------------------------------------------------------
+function long_listagg($column, $alias='',$order_by){
+    if (isOracle()){
+        return "rtrim(
+                        xmlagg(xmlelement(e,$column,',').extract('//text()') order by $order_by).getclobval()
+                ,',') " . getAliasString($alias) ;
+    }
+    if (isMysql()){
+        throw new Exception("long_listagg() method is only for Oracle");
+    }
+}
+
+**********************************************************************************
+
+consolidateTenorEndPosting in cronRepo
+-------------------------------------------------------------------------------------------------
+
+            $odt_ids = long_listagg('NVL (od_transactions.id, NULL)','odt_ids','od_transactions.id');
+            $odt_currency = long_listagg('NVL (od_transactions.currency, NULL)','odt_currency','od_transactions.id');
+            $particulars = long_listagg('NVL (to_char(od_transactions.particulars), NULL)','particulars','od_transactions.id');
+            $invoice_numbers = long_listagg('NVL (od_transactions.invoice_number, NULL)','invoice_numbers','od_transactions.id');
+            $interest_balance_details = long_listagg('NVL (od_transactions.interest_balance, NULL)','interest_balance_details','od_transactions.id');
+            $discountingids = long_listagg('NVL (od_transactions.discounting_id, NULL)','discountingids','od_transactions.id');
+            $payment_request_ids = long_listagg('NVL (od_transactions.payment_request_id, NULL)','payment_request_ids','od_transactions.id');
+            $loan_ids = long_listagg('NVL (od_transactions.invoice_id, NULL)','loan_ids','od_transactions.id');
+            $applied_base_rates = long_listagg('NVL (od_transactions.applied_base_rate, NULL)','applied_base_rates','od_transactions.id');
+            $seasonal_limit_ids = long_listagg('NVL (od_transactions.seasonal_limit_id, NULL)','seasonal_limit_ids','od_transactions.id');
+            $penal_interest_details = long_listagg('NVL (od_transactions.penal_interest, NULL)','penal_interest_details','od_transactions.id');
+            $invoice_ids = long_listagg('NVL (od_transactions.invoice_id, NULL)','invoice_ids','od_transactions.id');
+
+**********************************************************************************************************
+consolidateTenorEndAccrual in cronRepo
+-------------------------------------------------------------------------------------------------------------------
+            $odt_ids = long_listagg('NVL (odt.id, NULL)','odt_ids','odt.id');
+            $invoice_ids = long_listagg('NVL (odt.invoice_id, NULL)','invoice_ids','odt.id');
+            $od_ids = long_listagg('NVL (odt.od_account_id, NULL)','od_ids','odt.id');
+            $interest_balance_details = long_listagg('NVL (odt.interest_balance, NULL)','interest_balance_details','odt.id');
+            $penal_interest_details = long_listagg('NVL (odt.penal_interest, NULL)','penal_interest_details','odt.id');
+            $payment_request_ids = long_listagg('NVL (odt.payment_request_id, NULL)','payment_request_ids','odt.id');
+            $discount_ids = long_listagg('NVL (odt.discounting_id, NULL)','discount_ids','odt.id');
+
+*********************************************************************************************************************************
+consolidateDailyAccrual in cronRepo
+--------------------------------------------------------------------------------------------------------------------------------------
+
+               $odt_ids = long_listagg('NVL (odt.id, NULL)','odt_ids','odt.id');
+                $invoice_ids = long_listagg('NVL (odt.invoice_id, NULL)','invoice_ids','odt.id');
+                $int_reset_dates = long_listagg('NVL (odt.int_reset_date, NULL)','int_reset_dates','odt.id');
+                $penal_reset_dates = long_listagg('NVL (odt.penal_reset_date, NULL)','penal_reset_dates','odt.id');
+                $odi_date = long_listagg('NVL (odi."DATE", NULL)','odi_date','odt.id');
+                $od_ids = long_listagg('NVL (od.id, NULL)','od_ids','odt.id');
+                $interest_balance_details = long_listagg('NVL (odi.daily_interest, NULL)','interest_balance_details','odt.id');
+                $penal_interest_details = long_listagg('NVL (odi.penal_interest, NULL)','penal_interest_details','odt.id');
+                $payment_request_ids = long_listagg('NVL (odt.payment_request_id, NULL)','payment_request_ids','odt.id');
+                $discount_ids = long_listagg('NVL (odt.discounting_id, NULL)','discount_ids','odt.id');
+
+************************************************************************************************************************************
+consolidateInterestPosting in cronRepo
+
+            $particulars = long_listagg('to_char(od_transactions.particulars)','particulars','od_transactions.id');
+            $invoice_numbers = long_listagg('od_transactions.invoice_number','invoice_numbers','od_transactions.id');
+            $odt_ids = long_listagg('NVL (od_transactions.id, NULL)','odt_ids','od_transactions.id');
+            $odt_currency = long_listagg('NVL (od_transactions.currency, NULL)','odt_currency','od_transactions.id');
+            $loan_ids = long_listagg('NVL (od_transactions.invoice_id, NULL)','loan_ids','od_transactions.id');
+            $applied_base_rates = long_listagg('NVL (od_transactions.applied_base_rate, NULL)','applied_base_rates','od_transactions.id');
+            $seasonal_limit_ids = long_listagg('NVL (od_transactions.seasonal_limit_id, NULL)','seasonal_limit_ids','od_transactions.id');
+            $interest_balance_details = long_listagg('NVL (od_transactions.interest_balance, NULL)','interest_balance_details','od_transactions.id');
+            $penal_interest_details = long_listagg('NVL (od_transactions.penal_interest, NULL)','penal_interest_details','od_transactions.id');
+            $invoice_ids = long_listagg('NVL (od_transactions.invoice_id, NULL)','invoice_ids','od_transactions.id');
+            $discountingids = long_listagg('NVL (od_transactions.discounting_id, NULL)','discountingids','od_transactions.id');
+            $payment_request_ids = long_listagg('NVL (od_transactions.payment_request_id, NULL)','payment_request_ids','od_transactions.id');
