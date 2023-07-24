@@ -1,0 +1,16 @@
+function long_listagg($column, $alias='',$order_by = null){
+    if (isOracle()){
+        if ($order_by){
+            return "rtrim(
+                        xmlagg(xmlelement(e,$column,',').extract('//text()') order by $order_by).getclobval()
+                ,',') " . getAliasString($alias) ;
+        }else{
+            return "rtrim(
+                        xmlagg(xmlelement(e,$column,',').extract('//text()')).getclobval()
+                ,',') " . getAliasString($alias) ;
+        }
+    }
+    if (isMysql()){
+        throw new Exception("long_listagg() method is only for Oracle");
+    }
+}
