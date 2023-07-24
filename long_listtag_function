@@ -1,4 +1,4 @@
-function long_listagg($column, $alias='',$order_by = null){
+function long_listagg($column, $alias='',$order_by = ''){
     if (isOracle()){
         if ($order_by){
             return "rtrim(
